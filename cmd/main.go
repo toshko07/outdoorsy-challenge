@@ -43,7 +43,7 @@ func main() {
 	// Start server
 	go func() {
 		if err := e.Start(fmt.Sprintf(":%d", cfg.ServerPort)); err != nil && err != http.ErrServerClosed {
-			e.Logger.Fatalf("failed to start server: %v", err)
+			log.Fatalf("failed to start server: %v", err)
 		}
 	}()
 
