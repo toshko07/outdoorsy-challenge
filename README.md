@@ -11,7 +11,7 @@
 
 
 # About
-This is a solution for the outdoorsy-challenge.
+This is a solution for the outdoorsy interview challenge. The application is a REST API that provides endpoints for searching and retrieving rental listings.
 
 # Requirements
 - Go 1.21.6
@@ -50,8 +50,17 @@ make run-app
 ```
 
 # Testing
-Here are some example curl commands to test the application:
+The altomated tests can be run with the following command:
+```
+make run-tests
+```
 
+Test coverage can be generated with the following command:
+```
+make run-coverage
+```
+
+Here are also some curl commands to test the application manually:
 ```
 curl --request GET \
   --url http://localhost:8181/v1/rentals/1
