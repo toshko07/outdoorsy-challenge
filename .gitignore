@@ -1,0 +1,4 @@
+.vscode
+.env
+/coverage.out
+/coverage_without_mocks.out
