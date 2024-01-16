@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/labstack/gommon/log"
 	_ "github.com/lib/pq"
@@ -57,6 +58,9 @@ func SetupTestDb() (*sql.DB, func()) {
 	if err != nil {
 		log.Fatalf("failed to open database connection: %v", err)
 	}
+
+	// Wait for the database to be ready
+	time.Sleep(5 * time.Second)
 
 	if err := testDB.Ping(); err != nil {
 		panic(err)
