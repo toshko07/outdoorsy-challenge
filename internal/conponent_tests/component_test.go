@@ -1,8 +1,6 @@
 package conponent_tests
 
 import (
-	"context"
-	"database/sql"
 	"net/http"
 	"os"
 	"testing"
@@ -15,9 +13,7 @@ import (
 	"github.com/toshko07/outdoorsy-challenge/internal/services"
 )
 
-var ctx = context.Background()
 var echoInstance *echo.Echo
-var testDb *sql.DB
 
 func TestMain(m *testing.M) {
 	// Setup Echo

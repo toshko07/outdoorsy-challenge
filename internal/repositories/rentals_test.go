@@ -64,7 +64,6 @@ func TestRetails_GetRetail(t *testing.T) {
 			assert.Equal(t, tc.expectedRental, rental)
 		})
 	}
-
 }
 
 func TestRetails_GetRentals_ByIDs(t *testing.T) {

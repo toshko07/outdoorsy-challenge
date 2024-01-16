@@ -3,7 +3,6 @@ module github.com/toshko07/outdoorsy-challenge
 go 1.21.6
 
 require (
-	github.com/go-playground/form/v4 v4.2.1
 	github.com/labstack/echo/v4 v4.11.4
 	github.com/lib/pq v1.10.9
 	go.uber.org/mock v0.4.0

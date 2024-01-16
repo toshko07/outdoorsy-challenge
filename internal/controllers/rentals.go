@@ -7,7 +7,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/go-playground/form/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/toshko07/outdoorsy-challenge/api"
 	"github.com/toshko07/outdoorsy-challenge/internal/models"
@@ -23,9 +22,6 @@ func NewRentalsController(rentalsService services.Rentals) *RentalsController {
 		RentalsService: rentalsService,
 	}
 }
-
-// use a single instance of Decoder, it caches struct info
-var decoder *form.Decoder
 
 // Get Rental by id
 func (c *RentalsController) GetRental(e echo.Context) error {
