@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
 	"github.com/toshko07/outdoorsy-challenge/internal/configs"
 	"github.com/toshko07/outdoorsy-challenge/internal/controllers"
@@ -21,7 +22,7 @@ func main() {
 	// Setup
 	cfg := configs.LoadConfig()
 	e := echo.New()
-	e.Logger.SetLevel(log.INFO)
+	e.Use(middleware.Logger())
 
 	// Database
 	database := db.Connect(cfg.DB)
@@ -54,6 +55,6 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	if err := e.Shutdown(ctx); err != nil {
-		e.Logger.Fatal(err)
+		log.Errorf("failed to shutdown server: %v", err)
 	}
 }

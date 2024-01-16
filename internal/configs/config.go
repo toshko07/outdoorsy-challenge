@@ -1,7 +1,7 @@
 package configs
 
 import (
-	"log"
+	"github.com/labstack/gommon/log"
 
 	"github.com/joho/godotenv"
 	"github.com/kelseyhightower/envconfig"
@@ -15,7 +15,7 @@ type Config struct {
 
 func readConfig(filename string) (*Config, error) {
 	if err := godotenv.Load(filename); err != nil {
-		log.Printf("failed to load env file: %v", err)
+		log.Fatalf("failed to load config file: %v", err)
 	}
 
 	config := Config{}
@@ -29,7 +29,7 @@ func readConfig(filename string) (*Config, error) {
 func LoadConfig() Config {
 	config, err := readConfig(".env")
 	if err != nil {
-		log.Fatalf("failed to load config: %v", err)
+		log.Fatalf("failed to read config: %v", err)
 	}
 
 	return *config
