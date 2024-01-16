@@ -1,0 +1,291 @@
+openapi: 3.0.1
+
+info:
+  title: Outdoorsy API
+  description: Outdoorsy API for managing rentals
+  version: 1.0.0
+
+tags:
+  - name: Rentals
+
+paths:
+  /v1/rentals/{rental_id}:
+    get:
+      tags:
+        - Rentals
+      description: Returns a rental by id.
+      parameters:
+        - name: rental_id
+          in: path
+          description: The rental id.
+          required: true
+          schema:
+            type: integer
+            example: 1
+      responses:
+        200:
+          description: Rental object
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Rental"
+        404:
+          description: Resource not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        500:
+          description: Internal Error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  
+  /v1/rentals:
+    get:
+      tags:
+        - Rentals
+      description: Returns a list of rentals.
+      parameters:
+        - name: price_min
+          in: query
+          description: The minimum price of the rental.
+          required: false
+          schema:
+            type: number
+            example: 9000
+        - name: price_max
+          in: query
+          description: The maximum price of the rental.
+          required: false
+          schema:
+            type: number
+            example: 75000
+        - name: limit
+          in: query
+          description: The maximum number of rentals to return.
+          required: false
+          schema:
+            type: number
+            example: 3
+        - name: offset
+          in: query
+          description: The offset of the rentals to return.
+          required: false
+          schema:
+            type: number
+            example: 6
+        - name: ids
+          in: query
+          description: The comma separated list of rental ids to return.
+          required: false
+          schema:
+            type: string
+            example: 3,4,5
+        - name: near
+          in: query
+          description: The comma separated pair [lat,lng] to return rentals near.
+          required: false
+          schema:
+            type: string
+            example: 33.64,-117.93
+        - name: sort
+          in: query
+          description: The sort order of the rentals to return.
+          required: false
+          schema:
+            type: string
+            example: price
+      responses:
+        200:
+          description: Rental object
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Rental"
+        500:
+          description: Internal Error.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+components:
+  schemas:
+    Error:
+      type: object
+      description: The default error returned
+      required:
+        - status
+        - title
+        - failed_constraints
+      properties:
+        status:
+          type: integer
+          description: The HTTP status code returned.
+          example: 400
+        title:
+          type: string
+          description: Error title.
+          example: Bad Request
+        details:
+          type: string
+          description: The details about the error.
+          example: This request was bad
+        failed_constraints:
+          type: array
+          description: ....
+          items:
+            $ref: '#/components/schemas/FailedConstraint'
+
+    FailedConstraint:
+      type: object
+      description: Describes the constraint on a field that was wrongly formatted.
+      required:
+        - message
+        - reference
+      properties:
+        message:
+          type: string
+          description: The error message for the failed constraint.
+          example: This field was formatted incorrectly
+        reference:
+          type: string
+          description: The field reference for the failed constraint, using JsonPath notation.
+          example: object.field
+    
+    Rental:
+      type: object
+      description: A rental object.
+      required:
+        - id
+        - name
+        - description
+        - type
+        - make
+        - model
+        - year
+        - length
+        - sleeps
+        - primary_image_url
+        - price
+        - location
+        - user
+      properties:
+        id:
+          type: integer
+          description: The rental id.
+          example: 1
+        name:
+          type: string
+          description: The rental name.
+          example: My RV
+        description:
+          type: string
+          description: The rental description.
+          example: This is my RV
+        type:
+          type: string
+          description: The rental type.
+          example: Class A
+        make:
+          type: string
+          description: The rental make.
+          example: Ford
+        model:
+          type: string
+          description: The rental model.
+          example: F-150
+        year:
+          type: integer
+          description: The rental year.
+          example: 2019
+        length:
+          type: number
+          description: The rental length.
+          example: 20.5
+        sleeps:
+          type: integer
+          description: The rental sleeps.
+          example: 4
+        primary_image_url:
+          type: string
+          description: The rental primary image url.
+          example: https://www.outdoorsy.com/primary-image
+        price: 
+          $ref: "#/components/schemas/Price"
+        location:
+          $ref: "#/components/schemas/Location"
+        user:
+          $ref: "#/components/schemas/User"
+
+    Price:
+      type: object
+      description: The rental price.
+      required:
+        - day
+      properties:
+        day:
+          type: integer
+          description: The rental price per day.
+          example: 100
+    
+    Location:
+      type: object
+      description: The rental location.
+      required:
+        - city
+        - state
+        - zip
+        - country
+        - lat
+        - lng
+      properties:
+        city:
+          type: string
+          description: The rental city.
+          example: San Francisco
+        state:
+          type: string
+          description: The rental state.
+          example: CA
+        zip:
+          type: string
+          description: The rental zip.
+          example: 94103
+        country:
+          type: string
+          description: The rental country.
+          example: USA
+        lat:
+          type: number
+          description: The rental latitude.
+          example: 37.7749
+        lng:
+          type: number
+          description: The rental longitude.
+          example: 122.4194
+
+    User:
+      type: object
+      description: The rental user.
+      required:
+        - id
+        - first_name
+        - last_name
+      properties:
+        id:
+          type: integer
+          description: The rental
+          example: 1
+        first_name:
+          type: string
+          description: The rental user first name.
+          example: John
+        last_name:
+          type: string
+          description: The rental user last name.
+          example: Doe
