@@ -7,8 +7,8 @@ import (
 	"github.com/toshko07/outdoorsy-challenge/internal/repositories"
 )
 
+//go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAGE
 type Rentals interface {
-	// GetRental Get Rental by id
 	GetRental(ctx context.Context, id int) (*models.Rental, error)
 }
 
@@ -16,11 +16,10 @@ type RentalsImpl struct {
 	rentalsRepo repositories.Rentals
 }
 
-func NewRentalsImpl(rentalsRepo repositories.Rentals) *RentalsImpl {
+func NewRentalsService(rentalsRepo repositories.Rentals) Rentals {
 	return &RentalsImpl{rentalsRepo}
 }
 
-// GetRental Get Rental by id
 func (r *RentalsImpl) GetRental(ctx context.Context, id int) (*models.Rental, error) {
 	return r.rentalsRepo.GetRental(ctx, id)
 }

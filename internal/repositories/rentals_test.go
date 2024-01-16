@@ -8,7 +8,7 @@ import (
 	"github.com/toshko07/outdoorsy-challenge/internal/models"
 )
 
-func TestRetailsImpl_GetRetail(t *testing.T) {
+func TestRetails_GetRetail(t *testing.T) {
 	testCases := []struct {
 		name           string
 		id             int

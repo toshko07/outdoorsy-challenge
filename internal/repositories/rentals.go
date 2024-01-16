@@ -8,6 +8,7 @@ import (
 	"github.com/toshko07/outdoorsy-challenge/internal/models"
 )
 
+//go:generate mockgen -source=$GOFILE -destination=mock_$GOFILE -package=$GOPACKAGE
 type Rentals interface {
 	GetRental(ctx context.Context, id int) (*models.Rental, error)
 }

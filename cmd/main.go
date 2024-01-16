@@ -27,10 +27,10 @@ func main() {
 	database := db.Connect(cfg.DB)
 
 	// Repositories
-	rentalsRepo := repositories.NewRentalsImpl(database)
+	rentalsRepo := repositories.NewRentalsRepo(database)
 
 	// Services
-	rentalsService := services.NewRentalsImpl(rentalsRepo)
+	rentalsService := services.NewRentalsService(rentalsRepo)
 
 	// Controllers
 	rentalsController := controllers.NewRentalsController(rentalsService)
