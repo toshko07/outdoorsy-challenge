@@ -11,7 +11,7 @@
 
 
 # About
-This is a solution for the outdoorsy interview challenge. The application is a REST API that provides endpoints for searching and retrieving rental listings.
+This is a solution for the outdoorsy interview challenge. The application is a REST API that provides endpoints for searching and retrieving rentals.
 
 # Requirements
 - Go 1.21.6
