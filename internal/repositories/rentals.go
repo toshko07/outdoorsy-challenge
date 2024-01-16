@@ -151,12 +151,12 @@ func (r *RentalsImpl) GetRentals(ctx context.Context, params models.GetRentalsPa
 		query += fmt.Sprintf(" ORDER BY %s", params.Sort)
 	}
 
-	if params.Limit > 0 {
-		query += fmt.Sprintf(" LIMIT %d", params.Limit)
-	}
-
 	if params.Offset > 0 {
 		query += fmt.Sprintf(" OFFSET %d", params.Offset)
+	}
+
+	if params.Limit > 0 {
+		query += fmt.Sprintf(" LIMIT %d", params.Limit)
 	}
 
 	rows, err := r.db.QueryContext(ctx, query, args...)
@@ -165,6 +165,7 @@ func (r *RentalsImpl) GetRentals(ctx context.Context, params models.GetRentalsPa
 	}
 
 	var rentals []models.Rental
+	defer rows.Close()
 
 	for rows.Next() {
 		var rental models.Rental
