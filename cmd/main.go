@@ -37,6 +37,7 @@ func main() {
 
 	v1 := e.Group("/v1")
 	v1.GET("/rentals/:rental_id", rentalsController.GetRental)
+	v1.GET("/rentals", rentalsController.GetRentals)
 
 	// Start server
 	go func() {

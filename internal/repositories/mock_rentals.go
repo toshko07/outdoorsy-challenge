@@ -54,3 +54,18 @@ func (mr *MockRentalsMockRecorder) GetRental(ctx, id any) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRental", reflect.TypeOf((*MockRentals)(nil).GetRental), ctx, id)
 }
+
+// GetRentals mocks base method.
+func (m *MockRentals) GetRentals(ctx context.Context, params models.GetRentalsParams) ([]models.Rental, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetRentals", ctx, params)
+	ret0, _ := ret[0].([]models.Rental)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetRentals indicates an expected call of GetRentals.
+func (mr *MockRentalsMockRecorder) GetRentals(ctx, params any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetRentals", reflect.TypeOf((*MockRentals)(nil).GetRentals), ctx, params)
+}

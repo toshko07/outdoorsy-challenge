@@ -34,3 +34,13 @@ type User struct {
 	FirstName string
 	LastName  string
 }
+
+type GetRentalsParams struct {
+	PriceMin int64
+	PriceMax int64
+	Limit    int
+	Offset   int
+	Ids      []int
+	Near     []float64
+	Sort     string
+}

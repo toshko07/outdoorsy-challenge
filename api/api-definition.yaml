@@ -53,43 +53,52 @@ paths:
           description: The minimum price of the rental.
           required: false
           schema:
-            type: number
+            type: integer
+            format: int64
             example: 9000
         - name: price_max
           in: query
           description: The maximum price of the rental.
           required: false
           schema:
-            type: number
+            type: integer
+            format: int64
             example: 75000
         - name: limit
           in: query
           description: The maximum number of rentals to return.
           required: false
           schema:
-            type: number
+            type: integer
             example: 3
         - name: offset
           in: query
           description: The offset of the rentals to return.
           required: false
           schema:
-            type: number
+            type: integer
             example: 6
         - name: ids
           in: query
           description: The comma separated list of rental ids to return.
           required: false
+          style: form
+          explode: false
           schema:
-            type: string
-            example: 3,4,5
+            type: array
+            items:
+              type: integer
+              example: 3,4,5
         - name: near
           in: query
           description: The comma separated pair [lat,lng] to return rentals near.
           required: false
           schema:
-            type: string
-            example: 33.64,-117.93
+            type: array
+            items:
+              type: number
+              format: double
+              example: 33.64,-117.93
         - name: sort
           in: query
           description: The sort order of the rentals to return.
