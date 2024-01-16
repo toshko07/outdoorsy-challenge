@@ -165,6 +165,7 @@ func (r *RentalsImpl) GetRentals(ctx context.Context, params models.GetRentalsPa
 	}
 
 	var rentals []models.Rental
+
 	defer rows.Close()
 
 	for rows.Next() {

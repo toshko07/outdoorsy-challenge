@@ -63,3 +63,57 @@ func TestRetails_GetRetail(t *testing.T) {
 		})
 	}
 }
+
+func TestRetails_GetRentals(t *testing.T) {
+	testCases := []struct {
+		name                 string
+		params               models.GetRentalsParams
+		expectedRepoResponse []models.Rental
+		expectedRepoError    error
+		expectedRentals      []models.Rental
+		expectedError        error
+	}{
+		{
+			name:                 "Get existing rentals",
+			params:               models.GetRentalsParams{},
+			expectedRepoResponse: []models.Rental{},
+			expectedRepoError:    nil,
+			expectedRentals:      []models.Rental{},
+			expectedError:        nil,
+		},
+		{
+			name:                 "Get non-existing rentals",
+			params:               models.GetRentalsParams{Ids: []int{404}},
+			expectedRepoResponse: nil,
+			expectedRepoError:    nil,
+			expectedRentals:      nil,
+			expectedError:        nil,
+		},
+		{
+			name:                 "Internal error",
+			params:               models.GetRentalsParams{},
+			expectedRepoResponse: nil,
+			expectedRepoError:    models.NewInternalError("internal error"),
+			expectedRentals:      nil,
+			expectedError:        models.NewInternalError("internal error"),
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			// Given
+			ctx := context.Background()
+			ctrl := gomock.NewController(t)
+			repo := repositories.NewMockRentals(ctrl)
+			repo.EXPECT().GetRentals(ctx, tc.params).Return(tc.expectedRepoResponse, tc.expectedRepoError)
+			service := NewRentalsService(repo)
+
+			// When
+			rentals, err := service.GetRentals(ctx, tc.params)
+
+			// Then
+			assert.Equal(t, tc.expectedRentals, rentals)
+			assert.Equal(t, tc.expectedError, err)
+		})
+	}
+}
