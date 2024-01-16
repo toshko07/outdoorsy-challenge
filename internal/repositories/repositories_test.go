@@ -33,7 +33,7 @@ func setupTestDb() (*sql.DB, func()) {
 			"POSTGRES_DB":       "testingwithrentals",
 			"POSTGRES_PASSWORD": "postgres",
 		},
-		WaitingFor: wait.ForLog("database system is ready to accept connections"),
+		WaitingFor: wait.ForListeningPort("5432/tcp"),
 	}
 	postgresC, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
 		ContainerRequest: req,
@@ -61,11 +61,6 @@ func setupTestDb() (*sql.DB, func()) {
 		panic(err)
 	}
 
-	err = db.LoadTestData(testDB, "../db/test_data/sql-init.sql")
-	if err != nil {
-		panic(err)
-	}
-
 	return testDB, func() {
 		if err := postgresC.Terminate(ctx); err != nil {
 			panic(err)
@@ -73,7 +68,7 @@ func setupTestDb() (*sql.DB, func()) {
 	}
 }
 
-func truncateDb() {
+func setupTestData() {
 	_, err := database.Exec(`
 	CREATE OR REPLACE FUNCTION truncate_tables(username IN VARCHAR) RETURNS void AS $$
 	DECLARE
@@ -88,6 +83,11 @@ func truncateDb() {
 	$$ LANGUAGE plpgsql;
 	SELECT truncate_tables('postgres');
 	`)
+	if err != nil {
+		panic(err)
+	}
+
+	err = db.LoadTestData(database, "../db/test_data/sql-init.sql")
 	if err != nil {
 		panic(err)
 	}

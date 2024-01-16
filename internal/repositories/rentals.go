@@ -16,7 +16,7 @@ type RentalsImpl struct {
 	db *sql.DB
 }
 
-func NewRentalsImpl(db *sql.DB) *RentalsImpl {
+func NewRentalsRepo(db *sql.DB) Rentals {
 	return &RentalsImpl{db}
 }
 
