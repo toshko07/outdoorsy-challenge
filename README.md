@@ -17,6 +17,7 @@ This is a solution for the outdoorsy interview challenge. The application is a R
 - Go 1.21.6
 - Docker version 24.0.5
 - Docker Compose version v2.17.2
+- Make 4.3
 
 # General Structure
 The application is structured as follows:
