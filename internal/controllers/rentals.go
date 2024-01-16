@@ -9,7 +9,6 @@ import (
 
 	"github.com/go-playground/form/v4"
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/gommon/log"
 	"github.com/toshko07/outdoorsy-challenge/api"
 	"github.com/toshko07/outdoorsy-challenge/internal/models"
 	"github.com/toshko07/outdoorsy-challenge/internal/services"
@@ -33,13 +32,13 @@ func (c *RentalsController) GetRental(e echo.Context) error {
 	id := e.Param("rental_id")
 	rentalId, err := strconv.Atoi(id)
 	if err != nil {
-		log.Errorf("failed to get rental: %v", err)
+		e.Logger().Errorf("failed to convert id '%s' to int: %v", id, err)
 		return handleError(e, models.NewNotFoundError(fmt.Sprintf("rental with id '%s' not found", id)))
 	}
 
 	rental, err := c.RentalsService.GetRental(e.Request().Context(), rentalId)
 	if err != nil {
-		log.Errorf("failed to get rental: %v", err)
+		e.Logger().Errorf("failed to get rental with id '%d': %v", rentalId, err)
 		return handleError(e, err)
 	}
 
@@ -51,7 +50,7 @@ func (c *RentalsController) GetRentals(e echo.Context) error {
 	rentalsQueries := consumeQueryParams(e.QueryParams())
 	rentals, err := c.RentalsService.GetRentals(e.Request().Context(), rentalsQueries)
 	if err != nil {
-		log.Errorf("failed to get rentals: %v", err)
+		e.Logger().Errorf("failed to get rentals: %v", err)
 		return handleError(e, err)
 	}
 

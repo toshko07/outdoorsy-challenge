@@ -1,6 +1,7 @@
 package db
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"net/url"
@@ -9,6 +10,8 @@ import (
 
 	"github.com/labstack/gommon/log"
 	_ "github.com/lib/pq"
+	"github.com/testcontainers/testcontainers-go"
+	"github.com/testcontainers/testcontainers-go/wait"
 	"github.com/toshko07/outdoorsy-challenge/internal/configs"
 )
 
@@ -21,7 +24,77 @@ func Connect(config configs.DB) *sql.DB {
 	return database
 }
 
-func LoadTestData(database *sql.DB, path string) error {
+func SetupTestDb() (*sql.DB, func()) {
+	// Create the Postgres TestContainer
+	ctx := context.Background()
+	req := testcontainers.ContainerRequest{
+		Image:        "mdillon/postgis:11",
+		ExposedPorts: []string{"5432/tcp"},
+		Env: map[string]string{
+			"POSTGRES_DB":       "testingwithrentals",
+			"POSTGRES_PASSWORD": "postgres",
+		},
+		WaitingFor: wait.ForListeningPort("5432/tcp"),
+	}
+	postgresC, err := testcontainers.GenericContainer(ctx, testcontainers.GenericContainerRequest{
+		ContainerRequest: req,
+		Started:          true,
+	})
+
+	if err != nil {
+		panic(err)
+	}
+
+	p, err := postgresC.MappedPort(ctx, "5432")
+	if err != nil {
+		panic(err)
+	}
+
+	testDB, err := sql.Open("postgres", fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=%s",
+		"postgres", "postgres",
+		"localhost", p.Port(), "testingwithrentals",
+		"disable"))
+	if err != nil {
+		log.Fatalf("failed to open database connection: %v", err)
+	}
+
+	if err := testDB.Ping(); err != nil {
+		panic(err)
+	}
+
+	return testDB, func() {
+		if err := postgresC.Terminate(ctx); err != nil {
+			panic(err)
+		}
+	}
+}
+
+func SetupTestData(database *sql.DB) {
+	_, err := database.Exec(`
+	CREATE OR REPLACE FUNCTION truncate_tables(username IN VARCHAR) RETURNS void AS $$
+	DECLARE
+		statements CURSOR FOR
+			SELECT tablename FROM pg_tables
+			WHERE tableowner = username AND schemaname = 'public';
+	BEGIN
+		FOR stmt IN statements LOOP
+			EXECUTE 'TRUNCATE TABLE ' || quote_ident(stmt.tablename) || ' CASCADE;';
+		END LOOP;
+	END;
+	$$ LANGUAGE plpgsql;
+	SELECT truncate_tables('postgres');
+	`)
+	if err != nil {
+		panic(err)
+	}
+
+	err = loadTestData(database, "../db/test_data/sql-init.sql")
+	if err != nil {
+		panic(err)
+	}
+}
+
+func loadTestData(database *sql.DB, path string) error {
 	file, err := os.ReadFile(path)
 	if err != nil {
 		return err

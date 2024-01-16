@@ -53,7 +53,6 @@ func TestRetails_GetRetail(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			// Given
-			setupTestData()
 			ctx := context.Background()
 			repo := NewRentalsRepo(database)
 
@@ -125,7 +124,6 @@ func TestRetails_GetRentals_ByIDs(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			// Given
-			setupTestData()
 			ctx := context.Background()
 			repo := NewRentalsRepo(database)
 
@@ -186,7 +184,6 @@ func TestRetails_GetRentals_ByPrice(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			// Given
-			setupTestData()
 			ctx := context.Background()
 			repo := NewRentalsRepo(database)
 
@@ -244,7 +241,6 @@ func TestRetails_GetRentals_ByLocation(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			// Given
-			setupTestData()
 			ctx := context.Background()
 			repo := NewRentalsRepo(database)
 
@@ -314,7 +310,6 @@ func TestRetails_GetRentals_Sort_Offset_Limit(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			// Given
-			setupTestData()
 			ctx := context.Background()
 			repo := NewRentalsRepo(database)
 
@@ -404,7 +399,6 @@ func TestRetails_GetRentals_FilterByAllQueries(t *testing.T) {
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
 			// Given
-			setupTestData()
 			ctx := context.Background()
 			repo := NewRentalsRepo(database)
 
