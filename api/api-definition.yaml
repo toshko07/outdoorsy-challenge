@@ -121,7 +121,7 @@ components:
       required:
         - status
         - title
-        - failed_constraints
+        - details
       properties:
         status:
           type: integer
@@ -135,27 +135,6 @@ components:
           type: string
           description: The details about the error.
           example: This request was bad
-        failed_constraints:
-          type: array
-          description: ....
-          items:
-            $ref: '#/components/schemas/FailedConstraint'
-
-    FailedConstraint:
-      type: object
-      description: Describes the constraint on a field that was wrongly formatted.
-      required:
-        - message
-        - reference
-      properties:
-        message:
-          type: string
-          description: The error message for the failed constraint.
-          example: This field was formatted incorrectly
-        reference:
-          type: string
-          description: The field reference for the failed constraint, using JsonPath notation.
-          example: object.field
     
     Rental:
       type: object

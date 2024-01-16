@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -27,13 +28,13 @@ func (c *RentalsController) GetRental(e echo.Context) error {
 	rentalId, err := strconv.Atoi(id)
 	if err != nil {
 		log.Printf("failed to get rental: %v", err)
-		return err
+		return handleError(e, models.NewNotFoundError(fmt.Sprintf("rental with id '%s' not found", id)))
 	}
 
 	rental, err := c.RentalsService.GetRental(e.Request().Context(), rentalId)
 	if err != nil {
 		log.Printf("failed to get rental: %v", err)
-		return err
+		return handleError(e, err)
 	}
 
 	return e.JSON(http.StatusOK, createRentalResponse(*rental))
@@ -67,5 +68,22 @@ func createRentalResponse(rental models.Rental) api.Rental {
 			FirstName: rental.User.FirstName,
 			LastName:  rental.User.LastName,
 		},
+	}
+}
+
+func handleError(e echo.Context, err error) error {
+	switch err.(type) {
+	case models.NotFoundError:
+		return e.JSON(http.StatusNotFound, api.Error{
+			Details: err.Error(),
+			Status:  http.StatusNotFound,
+			Title:   "Not Found",
+		})
+	default:
+		return e.JSON(http.StatusInternalServerError, api.Error{
+			Details: "internal server error",
+			Status:  http.StatusInternalServerError,
+			Title:   "Internal Server Error",
+		})
 	}
 }
