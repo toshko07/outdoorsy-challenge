@@ -36,7 +36,7 @@ func TestRentals_GetRental(t *testing.T) {
 				Length:          10,
 				Sleeps:          2,
 				PrimaryImageUrl: "Test Primary Image URL",
-				Price:           models.Price{Day: 1},
+				Price:           models.Price{PerDay: 1},
 				Location: models.Location{
 					City:    "Test City",
 					State:   "Test State",

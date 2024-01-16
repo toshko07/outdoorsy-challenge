@@ -209,6 +209,7 @@ components:
       properties:
         day:
           type: integer
+          format: int64
           description: The rental price per day.
           example: 100
     
@@ -241,10 +242,12 @@ components:
           example: USA
         lat:
           type: number
+          format: double
           description: The rental latitude.
           example: 37.7749
         lng:
           type: number
+          format: double
           description: The rental longitude.
           example: 122.4194
 

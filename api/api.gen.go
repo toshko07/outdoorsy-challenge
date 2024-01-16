@@ -36,10 +36,10 @@ type Location struct {
 	Country string `json:"country"`
 
 	// Lat The rental latitude.
-	Lat float32 `json:"lat"`
+	Lat float64 `json:"lat"`
 
 	// Lng The rental longitude.
-	Lng float32 `json:"lng"`
+	Lng float64 `json:"lng"`
 
 	// State The rental state.
 	State string `json:"state"`
@@ -51,7 +51,7 @@ type Location struct {
 // Price The rental price.
 type Price struct {
 	// Day The rental price per day.
-	Day int `json:"day"`
+	Day int64 `json:"day"`
 }
 
 // Rental A rental object.
@@ -135,26 +135,27 @@ type GetV1RentalsParams struct {
 // Base64 encoded, gzipped, json marshaled Swagger object
 var swaggerSpec = []string{
 
-	"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",
+	"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",
+	"T5u/AgAA///4h37UThMAAA==",
 }
 
 // GetSwagger returns the content of the embedded swagger specification file

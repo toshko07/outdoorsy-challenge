@@ -63,7 +63,7 @@ func (r *RentalsImpl) GetRental(ctx context.Context, id int) (*models.Rental, er
 		&rental.Type,
 		&rental.Description,
 		&rental.Sleeps,
-		&price.Day,
+		&price.PerDay,
 		&location.City,
 		&location.State,
 		&location.Zip,
@@ -76,6 +76,10 @@ func (r *RentalsImpl) GetRental(ctx context.Context, id int) (*models.Rental, er
 		&location.Lng,
 		&rental.PrimaryImageUrl,
 	)
+
+	rental.User = user
+	rental.Price = price
+	rental.Location = location
 
 	if err != nil {
 		if err == sql.ErrNoRows {

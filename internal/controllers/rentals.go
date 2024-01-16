@@ -53,7 +53,7 @@ func createRentalResponse(rental models.Rental) api.Rental {
 		Sleeps:          rental.Sleeps,
 		PrimaryImageUrl: rental.PrimaryImageUrl,
 		Price: api.Price{
-			Day: rental.Price.Day,
+			Day: rental.Price.PerDay,
 		},
 		Location: api.Location{
 			City:    rental.Location.City,

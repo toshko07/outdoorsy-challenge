@@ -17,7 +17,7 @@ type Rental struct {
 }
 
 type Price struct {
-	Day int
+	PerDay int64
 }
 
 type Location struct {
@@ -25,8 +25,8 @@ type Location struct {
 	State   string
 	Zip     string
 	Country string
-	Lat     float32
-	Lng     float32
+	Lat     float64
+	Lng     float64
 }
 
 type User struct {
